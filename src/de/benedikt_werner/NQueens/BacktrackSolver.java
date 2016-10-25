@@ -3,22 +3,9 @@ package de.benedikt_werner.NQueens;
 import java.awt.Point;
 import java.util.LinkedList;
 
-public class BacktrackSolver {
+public class BacktrackSolver extends Solver {
 	private int[][] mBoard;
 	private LinkedList<Point> queens = new LinkedList<>();
-	
-	public static void main(String[] args) {
-		int N = 15;
-		
-		BacktrackSolver s = new BacktrackSolver(N);
-		
-		long start = System.nanoTime();		
-		int[][] solution = s.solve();
-		long end = System.nanoTime();
-		System.out.println("Time: " + (end-start) + "ns");
-		System.out.println("Time: " + ((end-start)/1000000000.0) + "s");
-		printBoard(solution);
-	}
 	
 	public static void printBoard(int[][] board) {
 		for (int x = 0; x < board.length; x++) {
@@ -29,12 +16,10 @@ public class BacktrackSolver {
 			System.out.println(string);
 		}
 	}
-
-	public BacktrackSolver(int n) {
-		mBoard = new int[n][n];
-	} 
 	
-	public int[][] solve() {
+	public int[][] solve(int n) {
+		mBoard = new int[n][n];
+		
 		if (recurse(mBoard.length)) {
 			return mBoard;
 		}
