@@ -3,8 +3,8 @@ package de.benedikt_werner.NQueens;
 public class Test {
 
 	public static void main(String[] args) {
-		benchmark(new BacktrackSolver(), 10);
-		benchmark(new BacktrackSolver2(), 10);
+		//benchmark(new BacktrackSolver(), 10);
+		benchmark(new BacktrackSolver2(), 16);
 	}
 	
 	public static void benchmark(Solver s, int n) {

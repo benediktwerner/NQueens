@@ -3,15 +3,6 @@ package de.benedikt_werner.NQueens;
 public class BacktrackSolver2 extends Solver {
 	private int[][] solution;
 	
-	public static void main(String[] args) {
-		int[][] board = new int[6][6];
-		board = placeQueen(board, 2, 2);
-		printBoard(board);
-		System.out.println("\n---\n");
-		board = placeQueen(board, 4, 3);
-		printBoard(board);
-	}
-	
 	public static void printBoard(int[][] board) {
 		for (int x = 0; x < board.length; x++) {
 			String string = "";
@@ -23,7 +14,7 @@ public class BacktrackSolver2 extends Solver {
 	}
 	
 	public int[][] solve(int n) {
-		if (recurse(new int[n][n], n, 0, 0)) {
+		if (recurse(new int[n][n], n, 0)) {
 			return solution;
 		}
 		else {
@@ -31,15 +22,15 @@ public class BacktrackSolver2 extends Solver {
 		}
 	}
 	
-	private boolean recurse(int[][] board, int n, int minX, int minY) {
+	private boolean recurse(int[][] board, int n, int minX) {
 		if (n == 0) {
 			solution = board;
 			return true;
 		}
 		for (int x = minX; x < board.length; x++) {
-			for (int y = minY; y < board.length; y++) {
+			for (int y = 0; y < board.length; y++) {
 				if (board[x][y] == 0) {
-					if (recurse(placeQueen(board,x, y), n-1, x, y+1)) return true;
+					if (recurse(placeQueen(board,x, y), n-1, x+1)) return true;
 				}
 			}
 		}
