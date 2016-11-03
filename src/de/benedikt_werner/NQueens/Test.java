@@ -4,7 +4,7 @@ public class Test {
 
 	public static void main(String[] args) {
 		//benchmark(new BacktrackSolver(), 10);
-		benchmark(new BacktrackSolver2(), 16);
+		benchmark(new BacktrackSolver2(), 4);
 	}
 	
 	public static void benchmark(Solver s, int n) {
