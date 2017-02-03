@@ -11,7 +11,7 @@ import java.awt.RenderingHints;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 
-public class ChessMiniJava extends MiniJava {
+public class ChessMiniJava {
 	private static class Field extends JPanel {
 		boolean black, queen;
 		Point p;
@@ -48,15 +48,7 @@ public class ChessMiniJava extends MiniJava {
 		}
 	}
 
-	public static void paintField(int[] schachbrett) {
-		boolean[][] field = new boolean[schachbrett.length][schachbrett.length];
-		for (int i = 0; i < schachbrett.length; i++) {
-			field[i][schachbrett[i]] = true;
-		}
-		paintField(field);
-	}
-
-	public static void paintField(boolean[][] field) {
+	public static void paintField(int[][] field) {
 		JFrame myFrame = new JFrame("Spielfeld");
 		JPanel pan = new JPanel();
 		java.util.Set<Integer> s1 = new java.util.HashSet<Integer>(), s2 = new java.util.HashSet<Integer>(),
@@ -64,14 +56,13 @@ public class ChessMiniJava extends MiniJava {
 		pan.setLayout(new GridLayout(field.length, field.length));
 		for (int x = 0; x < field.length; x++) {
 			for (int y = 0; y < field[x].length; y++) {
-				pan.add(new Field((x + y) % 2 == 1, field[x][y]));
-				if (field[x][y]) {
+				pan.add(new Field((x + y) % 2 == 1, field[x][y] == 1));
+				if (field[x][y] == 1) {
 					s1.add(x);
 					s2.add(y);
 					s3.add(x + y);
 					s4.add(field.length - 1 - y + x);
 				}
-				;
 			}
 		}
 		boolean sol = (s1.size() == field.length) && (field.length == s2.size()) && (field.length == s3.size())
@@ -86,10 +77,5 @@ public class ChessMiniJava extends MiniJava {
 		myFrame.setSize(400, 400);
 		myFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		myFrame.setVisible(true);
-	}
-
-	public static void main(String[] args) {
-		int[] b = { 1, 3, 2, 0, 5, 4 };
-		paintField(b);
 	}
 }

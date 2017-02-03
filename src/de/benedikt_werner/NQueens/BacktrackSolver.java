@@ -1,76 +1,63 @@
 package de.benedikt_werner.NQueens;
 
-import java.awt.Point;
-import java.util.LinkedList;
-
-public class BacktrackSolver extends Solver {
-	private int[][] mBoard;
-	private LinkedList<Point> queens = new LinkedList<>();
+public class BacktrackSolver {
+	private int[][] solution;
 	
-	public static void printBoard(int[][] board) {
-		for (int x = 0; x < board.length; x++) {
-			String string = "";
-			for (int y = 0; y < board.length; y++) {
-				string += (board[x][y] == 1) ? "Q" : (board[x][y] == -1 ? "." : "_");
-			}
-			System.out.println(string);
-		}
+	public static void main(String[] args) {
+        long start = System.nanoTime();     
+        int[][] solution = new BacktrackSolver().solve(8);
+        long end = System.nanoTime();
+
+        System.out.println("Time: " + (end-start) + "ns");
+        System.out.println("Time: " + ((end-start)/1000000000.0) + "s");
+        
+        ChessMiniJava.paintField(solution);
 	}
 	
 	public int[][] solve(int n) {
-		mBoard = new int[n][n];
-		
-		if (recurse(mBoard.length)) {
-			return mBoard;
-		}
-		else {
-			throw new IllegalStateException("No valid arrangement found!");
-		}
+		if (recurse(new int[n][n], n, 0))
+			return solution;
+		else throw new IllegalStateException("No valid arrangement found!");
 	}
 	
-	private boolean recurse(int n) {
+	private boolean recurse(int[][] board, int n, int minX) {
 		if (n == 0) {
+			solution = board;
 			return true;
 		}
-		for (int x = 0; x < mBoard.length; x++) {
-			for (int y = 0; y < mBoard.length; y++) {
-				if (isFreePosition(x, y)) {
-					queens.addLast(new Point(x,y));
-					if (recurse(n - 1)) {
-						placeQueen(x, y);
-						return true;
-					}
-					queens.removeLast();
-				}
+		for (int x = minX; x < board.length; x++) {
+			for (int y = 0; y < board.length; y++) {
+				if (board[x][y] == 0)
+					if (recurse(placeQueen(board,x, y), n-1, x+1))
+					    return true;
 			}
 		}
 		return false;
 	}
 	
-	private boolean isFreePosition(int x, int y) {
-		for (Point p : queens) {
-			if (x == p.x || y == p.y || (x - y) == (p.x - p.y) || (x + y) == (p.x + p.y)) {
-				return false;
+	private static int[][] placeQueen(int[][] board, int x, int y) {
+		int[][] result = new int[board.length][board.length];
+		
+		for (int a = 0; a < board.length; a++) {
+			for (int b = 0; b < board.length; b++) {
+				if (board[a][b] == 0) {
+					if (a == x || b == y || (a - b) == (x - y) || (a + b) == (x + y))
+						result[a][b] = -1;
+					else result[a][b] = 0;
+				}
+				else result[a][b] = board[a][b];
 			}
 		}
-		return true;
+		result[x][y] = 1;
+		return result;
 	}
-	
-	private void placeQueen(int x, int y) {
-		for (int i = 0; i < mBoard.length; i++) {
-			mBoard[x][i] = -1;
-			mBoard[i][y] = -1;
-			
-			int ix1 = x - y + i; 
-			if (ix1 >= 0 && ix1 < mBoard.length) {
-				mBoard[ix1][i] = -1;
-			}
-			
-			int ix2 = x + y - i; 
-			if (ix2 >= 0 && ix2 < mBoard.length) {
-				mBoard[ix2][i] = -1;
-			}
-		}
-		mBoard[x][y] = 1;
-	}
+    
+    public static void printBoard(int[][] board) {
+        for (int x = 0; x < board.length; x++) {
+            String string = "";
+            for (int y = 0; y < board.length; y++)
+                string += (board[x][y] == 1) ? "Q" : (board[x][y] == -1 ? "." : "_");
+            System.out.println(string);
+        }
+    }
 }
