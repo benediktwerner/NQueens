@@ -1,16 +1,24 @@
 package de.benedikt_werner.NQueens;
 
+import java.util.Scanner;
+
 public class BacktrackSolver {
 	private int[][] solution;
 	
 	public static void main(String[] args) {
+	    Scanner in = new Scanner(System.in);
+	    System.out.println("Enter board size to solve: ");
+	    int n = in.nextInt();
+	    in.close();
+	    
         long start = System.nanoTime();     
-        int[][] solution = new BacktrackSolver().solve(8);
+        int[][] solution = new BacktrackSolver().solve(n);
         long end = System.nanoTime();
 
         System.out.println("Time: " + (end-start) + "ns");
-        System.out.println("Time: " + ((end-start)/1000000000.0) + "s");
+        System.out.println("Time: " + ((end-start)/1_000_000_000.0) + "s");
         
+        printBoard(solution);
         ChessMiniJava.paintField(solution);
 	}
 	
